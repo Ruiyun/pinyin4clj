@@ -38,14 +38,14 @@ pinyin4clj是一个用于获取汉字拼音的Clojure库，其内部对pinyin4j�
 
 ### 更多示例
 ```clojure
-(pinyin \"女子\")
--> \"nǚzi\"
+(pinyin "女子")
+-> "nǚzi"
 
-(pinyin \"女子\" :separator \space)
--> \"nǚ zi\"
+(pinyin "女子" :separator \space)
+-> "nǚ zi"
 
-(pinyin \"女子\" :tone :without-tone :v-char :with-v)
--> \"nvzi\"
+(pinyin "女子" :tone :without-tone :v-char :with-v)
+-> "nvzi"
 ```
 
 ## License

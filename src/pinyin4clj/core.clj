@@ -70,7 +70,7 @@
       (pinyin \"女子\")
       -> \"nǚzi\"
 
-      (pinyin \"女子\" :separator \space)
+      (pinyin \"女子\" :separator \\space)
       -> \"nǚ zi\"
 
       (pinyin \"女子\" :tone :without-tone :v-char :with-v)
