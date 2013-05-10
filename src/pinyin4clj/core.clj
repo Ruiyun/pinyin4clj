@@ -34,10 +34,10 @@
   (reduce (fn [result [curr-type curr-val :as curr]]
             (let [[prev-type prev-val] (last result)]
               (if (= curr-type :char)
-                (if (= prev-type :py)
-                  (conj result [:char-seq [curr-val]])
+                (if (= prev-type :char-seq)
                   (-> (pop result)
-                      (conj [:char-seq (conj prev-val curr-val)])))
+                      (conj [:char-seq (conj prev-val curr-val)]))
+                  (conj result [:char-seq [curr-val]]))
                 (conj result curr))))
           [] coll))
 
@@ -48,7 +48,7 @@
             val))
         coll))
 
-(defn pinyin [s & {:keys [case tone v-char separator] :as opts}]
+(defn pinyin
   "opts设置项说明
      :case 输出大小写设置
        :lower-case        大写输出
@@ -59,7 +59,7 @@
        :with-tone-mark    直接在输出拼音上标记音调
        :with-tone-number  使用数字1 2 3 4来表示音调
 
-     :v-char 拼音'ü'（发音为'淤'）显示设置
+     :v-char 韵母'ü'的显示设置
        :with-u-and-colon  使用'u:'来表示
        :with-u-unicode    直接表示为ü
        :with-v            使用字母'v'来表示
@@ -70,16 +70,27 @@
       (pinyin \"女子\")
       -> \"nǚzi\"
 
-      (pinyin \"女子\" :separator \\space)
+      (pinyin \"女子\" {:separator \\space})
       -> \"nǚ zi\"
 
-      (pinyin \"女子\" :tone :without-tone :v-char :with-v)
+      (pinyin \"女子\" {:tone :without-tone, :v-char :with-v})
       -> \"nvzi\""
-  (let [fmt (if (every? nil? [case tone v-char])
-              default-py-fmt
-              (output-fmt opts))]
-    (->> (mapv #(py-char % fmt) s)
-         (recomb)
-         (remove-type)
-         (interpose separator)
-         (apply str))))
+  ([s] (pinyin nil))
+  ([s {separator :separator :as opts}]
+     (let [fmt (if opts
+                 (output-fmt opts)
+                 default-py-fmt)]
+       (->> (mapv #(py-char % fmt) s)
+            (recomb)
+            (remove-type)
+            (interpose separator)
+            (apply str)))))
+
+(defn ascii-pinyin
+  "仅用便于键盘录入的ascii字符来表示汉字拼音
+   等同于调用pinyin函数时，设置了{:tone :without-tone, :v-char :with-v}
+
+   (ascii-pinyin \"女子\")
+   -> \"nvzi\""
+  [s]
+  (pinyin s {:tone :without-tone, :v-char :with-v}))
