@@ -36,7 +36,7 @@ pinyin4clj是一个用于获取汉字拼音的Clojure库，其内部对pinyin4j�
 #### :separator 每个汉字之间的分隔符
 > 若不设置，表示汉字之间的拼音没有间隔
 
-### 更多示例
+## 更多示例
 ```clojure
 (pinyin "女子")
 -> "nǚzi"
@@ -46,6 +46,12 @@ pinyin4clj是一个用于获取汉字拼音的Clojure库，其内部对pinyin4j�
 
 (pinyin "女子" :tone :without-tone :v-char :with-v)
 -> "nvzi"
+
+(pinyin "女子的英文是lady")
+-> "nǚzideyīngwénshìlady"
+
+(pinyin "女子的英文是lady" :separator " ")
+-> "nǚ zi de yīng wén shì lady"
 ```
 
 ## License
