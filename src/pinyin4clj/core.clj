@@ -1,4 +1,8 @@
 (ns pinyin4clj.core
+  "pinyin4clj对pinyin4j进行了简单的封装，提供更符合clojure惯例的调用方式。
+
+   函数'pinyin'可以通过传入选项来控制输出的拼音格式。
+   而函数'ascii-pinyin'，则可以生成便于与键盘输入进行比较的格式，对于自动完成等功能而言，非常方便。"
   (:refer-clojure :exclude [replace])
   (:require [clojure.string :refer [replace upper-case]])
   (:import [net.sourceforge.pinyin4j PinyinHelper]
@@ -75,7 +79,7 @@
 
       (pinyin \"女子\" {:tone :without-tone, :v-char :with-v})
       -> \"nvzi\""
-  ([s] (pinyin nil))
+  ([s] (pinyin s nil))
   ([s {separator :separator :as opts}]
      (let [fmt (if opts
                  (output-fmt opts)
